@@ -63,7 +63,7 @@ namespace snap
 
         private void addElem(object sender){
             if(name1.Text == string.Empty){
-                
+
             } else {
                 bool newer = true;
                 if(!transp.database.ContainsKey(name1.Text)){

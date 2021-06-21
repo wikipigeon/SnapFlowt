@@ -15,6 +15,7 @@ namespace snap
             InitializeComponent();
             this.Top = 0;
             this.Left = 0;
+            this.WindowState = FormWindowState.Maximized;
             this.Activate();
             this.Show();
         }
@@ -38,6 +39,7 @@ namespace snap
         private void Form3_MouseDown(object sender, MouseEventArgs e)
         {
             beginCap = true;
+            this.WindowState = FormWindowState.Normal;
             currentX = MousePosition.X;
             currentY = MousePosition.Y;
             this.Left = currentX;
