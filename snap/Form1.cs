@@ -65,19 +65,18 @@ namespace snap
 
         private void addElem(object sender){
             if(name1.Text == string.Empty){
-
-            } else {
-                inputing = false;
-                bool newer = true;
-                if(!transp.database.ContainsKey(name1.Text)){
-                    listBox1.Items.Add(name1.Text);
-                    transp.database.Add(name1.Text, new data());
-                    newer = false;
-                }
-                int index = listBox1.FindString(name1.Text);
-                listBox1.SetSelected(index, true);
-                visb.Checked = newer;
+                name1.Text = new string("New_1");
             }
+            inputing = false;
+            bool newer = true;
+            if(!transp.database.ContainsKey(name1.Text)){
+                listBox1.Items.Add(name1.Text);
+                transp.database.Add(name1.Text, new data());
+                newer = false;
+            }
+            int index = listBox1.FindString(name1.Text);
+            listBox1.SetSelected(index, true);
+            visb.Checked = newer;
         }
 
         private void visb_CheckedChanged(object sender, EventArgs e)
@@ -87,7 +86,6 @@ namespace snap
             }
             string target = listBox1.SelectedItem.ToString();
             if(transp.database.ContainsKey(target)){
-
                 if(visb.Checked && transp.database[target].pip.available){
                     transp.database[target].pip.Visible = true;
                     visb.Checked = true;
