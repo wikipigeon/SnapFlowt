@@ -58,6 +58,10 @@ namespace snap
 
         private void add_Click(object sender, EventArgs e)
         {
+            addElem(sender);
+        }
+
+        private void addElem(object sender){
             if(name1.Text == string.Empty){
                 
             } else {
@@ -157,5 +161,12 @@ namespace snap
             trsp.Enabled = TF;
         }
 
+        private void name1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == '\r'){
+                e.Handled = true;
+                addElem(sender);
+            }
+        }
     }
 }
