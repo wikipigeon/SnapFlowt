@@ -13,36 +13,35 @@ namespace snap
 {
     public partial class Form2 : Form
     {
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool ReleaseCapture();
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
+        const int SYSCMD = 0x0112;
+        const int SC_MOVE = 0xF010;
+        const int SC_SIZE = 0xF000;
+        const int HTCAPTION = 0x0002;
+        const int FLEXBILITY = 7;
+        private bool key_menu = false;
+        private int sourceW = 0;
+        private int sourceH = 0;
+
         public Form2()
         {
             InitializeComponent();
         }
-        private bool beginMove = false;
-        private bool beginScale = false;
-        private bool menu = false; // reset
-        private bool ctrl = false; // free scale
-        private int sourceW = 0;
-        private int sourceL = 0;
-        private double actualW = 0;
-        private double actualL = 0;
-        private double freeX = 0;
-        private double freeY = 0;
-        private double scaleX = 0;
-        private double scaleY = 0;
-        private double sc = 0;
-        private double sc_1 = 0;
+
         public bool available = false;
 
+        private int LTRB = 0;
 
         public void Assign(int L, int T, int W, int H, ref Bitmap b){
             sourceW = W;
-            sourceL = H;
-            actualW = sourceW;
-            actualL = sourceL;
+            sourceH = H;
             this.Size = new Size(W, H);
             this.Left = L;
             this.Top = T;
-            pictureBox1.BackgroundImage = (Image)b;
+            this.pictureBox1.BackgroundImage = (Image)b;
             this.Visible = true;
             available = true;
         }
@@ -50,98 +49,72 @@ namespace snap
         private void Form2_MouseDown(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Left){
-                beginMove = true;
-                freeX = MousePosition.X;
-                freeY = MousePosition.Y;
-            } else if(  e.Button == MouseButtons.Right && menu){
-                this.Size = new Size(sourceW, sourceL);
-                actualW = sourceW;
-                actualL = sourceL;
-                menu = false;
-            } else if(e.Button == MouseButtons.Right){
-                beginScale = true;
-                freeX = MousePosition.X;
-                freeY = MousePosition.Y;
-                if(!ctrl){
-                    sc = Math.Sqrt(actualW * actualW + actualL * actualL);
-                }
+                LTRB = 0;
+                // near left side
+                LTRB |= (Math.Abs(MousePosition.X-this.Left) <= FLEXBILITY)? 0b1000: 0b0000;
+                // near top side
+                LTRB |= (Math.Abs(MousePosition.Y-this.Top) <= FLEXBILITY)? 0b0100: 0b0000;
+                // near right side
+                LTRB |= (Math.Abs(this.Right-MousePosition.X) <= FLEXBILITY)? 0b0010: 0b0000;
+                // near bottom side
+                LTRB |= (Math.Abs(this.Bottom-MousePosition.Y) <= FLEXBILITY)? 0b0001: 0b0000;
 
+                ReleaseCapture();
+                if ((LTRB & 0b0011) == 0b0011){ // RD
+                    SendMessage(this.Handle, SYSCMD, SC_SIZE + 0x8, 0);
+                } else if ((LTRB & 0b0110) == 0b0110){ // RU
+                    SendMessage(this.Handle, SYSCMD, SC_SIZE + 0x5, 0);
+                } else if ((LTRB & 0b1100) == 0b1100){ // LU
+                    SendMessage(this.Handle, SYSCMD, SC_SIZE + 0x4, 0);
+                } else if ((LTRB & 0b1001) == 0b1001){ // LD
+                    SendMessage(this.Handle, SYSCMD, SC_SIZE + 0x7, 0);
+                } else if ((LTRB & 0b0010) == 0b0010){ // R
+                    SendMessage(this.Handle, SYSCMD, SC_SIZE + 0x2, 0);
+                } else if ((LTRB & 0b0100) == 0b0100){ // U
+                    SendMessage(this.Handle, SYSCMD, SC_SIZE + 0x3, 0);
+                } else if ((LTRB & 0b1000) == 0b1000){ // L
+                    SendMessage(this.Handle, SYSCMD, SC_SIZE + 0x1, 0);
+                } else if ((LTRB & 0b0001) == 0b0001){ // D
+                    SendMessage(this.Handle, SYSCMD, SC_SIZE + 0x6, 0);
+                } else { // middle move
+                    SendMessage(this.Handle, SYSCMD, SC_MOVE + HTCAPTION, 0);
+                }
+            } else if(e.Button == MouseButtons.Right){
+                if(key_menu){
+                    key_menu = false;
+                    this.Size = new Size(sourceW, sourceH);
+                }
             }
+
         }
 
         private void Form2_MouseMove(object sender, MouseEventArgs e)
         {
-            if(beginMove){
-                this.Left += (int)(MousePosition.X - freeX);
-                this.Top += (int)(MousePosition.Y - freeY);
-                freeX = MousePosition.X;
-                freeY = MousePosition.Y;
-            } else if(beginScale){
-                scaleX = MousePosition.X - freeX;
-                scaleY = MousePosition.Y - freeY;
 
-                if(ctrl){
-                    actualW += scaleX;
-                    actualL += scaleY;
-                } else {
-                    sc_1 = Math.Sqrt(scaleX * scaleX + scaleY * scaleY);
-                    sc_1 = sc + sc_1 / 2;
-                    sc_1 /= sc;
-                    if(scaleX > 0){
-                        actualW *= sc_1;
-                        actualL *= sc_1;
-                    } else {
-                        actualW /= sc_1;
-                        actualL /= sc_1;
-                    }
-                }
-                this.Size = new Size((int)actualW, (int)actualL);
-                freeX = MousePosition.X;
-                freeY = MousePosition.Y;
-            }
         }
 
         private void Form2_MouseUp(object sender, MouseEventArgs e)
         {
-            if(beginMove){
-                beginMove = false;
-            } else if(beginScale){
-                beginScale = false;
-            }
 
         }
 
         private void Form2_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.Menu){
-                menu = true;
-            } else if(e.KeyCode == Keys.ControlKey){
-                ctrl = true;
+                key_menu = true;
             }
         }
 
         private void Form2_KeyUp(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.Menu){
-                menu = false;
-            } else if(e.KeyCode == Keys.ControlKey){
-                ctrl = false;
+                key_menu = false;
             }
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             Form2_MouseDown(sender, e);
-        }
-
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
-        {
-            Form2_MouseMove(sender, e);
-        }
-
-        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
-        {
-            Form2_MouseUp(sender, e);
         }
     }
 

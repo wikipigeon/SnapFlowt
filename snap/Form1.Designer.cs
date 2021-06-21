@@ -126,6 +126,7 @@ namespace snap
             this.name1.Size = new System.Drawing.Size(382, 32);
             this.name1.TabIndex = 4;
             this.name1.TextChanged += new System.EventHandler(this.name1_TextChanged);
+            this.name1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.name1_KeyPress);
             // 
             // trsp
             // 
