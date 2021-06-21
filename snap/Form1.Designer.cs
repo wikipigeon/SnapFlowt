@@ -127,6 +127,7 @@ namespace snap
             this.name1.TabIndex = 4;
             this.name1.TextChanged += new System.EventHandler(this.name1_TextChanged);
             this.name1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.name1_KeyPress);
+            this.name1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.name1_MouseDown);
             // 
             // trsp
             // 

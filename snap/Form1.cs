@@ -16,7 +16,9 @@ namespace snap
         public Form1()
         {
             InitializeComponent();
+            name1.Text = new string("New_1");
         }
+        private bool inputing = false;
 
         private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
         {
@@ -65,6 +67,7 @@ namespace snap
             if(name1.Text == string.Empty){
 
             } else {
+                inputing = false;
                 bool newer = true;
                 if(!transp.database.ContainsKey(name1.Text)){
                     listBox1.Items.Add(name1.Text);
@@ -140,6 +143,7 @@ namespace snap
                 enableCtrl(false);
                 return ;
             }
+            inputing = false;
             enableCtrl(true);
             data val_;
             string target = listBox1.SelectedItem.ToString();
@@ -164,8 +168,17 @@ namespace snap
         private void name1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if(e.KeyChar == '\r'){
+                inputing = false;
                 e.Handled = true;
                 addElem(sender);
+            }
+        }
+
+        private void name1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if(!inputing){
+                inputing = true;
+                name1.Text = string.Empty;
             }
         }
     }
