@@ -13,6 +13,8 @@ namespace snap
         public Form3()
         {
             InitializeComponent();
+            this.Top = 0;
+            this.Left = 0;
             this.Activate();
             this.Show();
         }

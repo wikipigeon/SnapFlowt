@@ -36,7 +36,8 @@ namespace snap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            this.ClientSize = new System.Drawing.Size(  Screen.GetBounds(this).Width, 
+                                                        Screen.GetBounds(this).Height);
             this.ControlBox = false;
             this.Cursor = System.Windows.Forms.Cursors.Cross;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
