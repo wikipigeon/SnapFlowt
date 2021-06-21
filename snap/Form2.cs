@@ -23,25 +23,27 @@ namespace snap
         const int HTCAPTION = 0x0002;
         const int FLEXBILITY = 7;
         private bool key_menu = false;
-        private int sourceW = 0;
-        private int sourceH = 0;
+        private int sourceW = 10;
+        private int sourceH = 10;
 
         public Form2()
         {
             InitializeComponent();
+            this.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.Visible = true;
         }
 
         public bool available = false;
 
         private int LTRB = 0;
 
-        public void Assign(int L, int T, int W, int H, ref Bitmap b){
+        public void Assign(int L, int T, int W, int H, Bitmap b){
             sourceW = W;
             sourceH = H;
             this.Size = new Size(W, H);
             this.Left = L;
             this.Top = T;
-            this.pictureBox1.BackgroundImage = (Image)b;
+            this.pictureBox1.Image = (Image)b;
             this.Visible = true;
             available = true;
         }
