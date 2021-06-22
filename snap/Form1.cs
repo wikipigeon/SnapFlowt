@@ -186,13 +186,6 @@ namespace snap
             }
         }
 
-        private void notifyIcon1_Click(object sender, EventArgs e)
-        {
-            if(this.WindowState == FormWindowState.Normal){
-                this.Activate();
-            }
-        }
-
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
             flipflop();
@@ -228,5 +221,13 @@ namespace snap
             // System.Environment.Exit(0);
         }
 
+        private void notifyIcon1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left){
+                if(this.WindowState == FormWindowState.Normal){
+                    this.Activate();
+                }
+            }
+        }
     }
 }
