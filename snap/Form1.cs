@@ -186,6 +186,13 @@ namespace snap
             }
         }
 
+        private void notifyIcon1_Click(object sender, EventArgs e)
+        {
+            if(this.WindowState == FormWindowState.Normal){
+                this.Activate();
+            }
+        }
+
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
             flipflop();

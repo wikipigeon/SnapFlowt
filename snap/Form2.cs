@@ -21,7 +21,7 @@ namespace snap
         const int SC_MOVE = 0xF010;
         const int SC_SIZE = 0xF000;
         const int HTCAPTION = 0x0002;
-        const int FLEXBILITY = 7;
+        const int FLEXBILITY = 15;
         private bool key_menu = false;
         private int sourceW = 10;
         private int sourceH = 10;
