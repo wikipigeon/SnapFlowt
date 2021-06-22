@@ -75,7 +75,6 @@ namespace snap
                                                             this.Top,
                                                             transp.bt.Width,
                                                             transp.bt.Height,
-                                                            transp.database[transp.target].transp,
                                                             transp.bt);
                 transp.database[transp.target].pip.available = true;
                 transp.touch = true;

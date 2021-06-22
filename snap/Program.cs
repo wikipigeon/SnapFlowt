@@ -12,9 +12,10 @@ namespace snap
     {
         public data()
         {
-            transp = 100;
+            transp = 70;
             visibility = true;
             pip = new Form2();
+            pip.Opacity = transp / 100.0;
 
         }
         public int transp;
