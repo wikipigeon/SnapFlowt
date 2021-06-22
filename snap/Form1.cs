@@ -58,6 +58,7 @@ namespace snap
             string target = listBox1.SelectedItem.ToString();
             if(transp.database.ContainsKey(target)){
                 transp.target = target;
+                trsp.Value = transp.database[target].transp;
                 this.Opacity = 0.0D;
                 scrnSnip = new Form3();
             }

@@ -37,13 +37,14 @@ namespace snap
 
         private int LTRB = 0;
 
-        public void Assign(int L, int T, int W, int H, Bitmap b){
+        public void Assign(int L, int T, int W, int H, int t, Bitmap b){
             sourceW = W;
             sourceH = H;
             this.Size = new Size(W, H);
             this.Left = L;
             this.Top = T;
             this.pictureBox1.Image = (Image)b;
+            this.Opacity = t / 100.0;
             this.Visible = true;
             available = true;
         }
