@@ -34,29 +34,7 @@ namespace snap
 
     static class Program
     {
-        //[System.Runtime.InteropServices.DllImport("User32.dll")]
-        //private static extern bool ShowWindowAsync(IntPtr hWnd, int cmdShow);
-        //[System.Runtime.InteropServices.DllImport("User32.dll")]
-        //private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        //private const int SW_SHOWNOMAL = 1;
-        //private static void HandleRunningInst(Process instance){
-        //    ShowWindowAsync(instance.MainWindowHandle, SW_SHOWNOMAL);
-        //    SetForegroundWindow(instance.MainWindowHandle);
-        //}
-        //private static Process RunningInst(){
-        //    Process currentProc = Process.GetCurrentProcess();
-        //    Process[] Procs = Process.GetProcessesByName(currentProc.ProcessName);
-        //    foreach(Process _Proc in Procs){
-        //        if(_Proc.Id != currentProc.Id){
-        //            return _Proc;
-        //        }
-        //    }
-        //    return null;
-        //}
-
         public static EventWaitHandle procStarted;
-
 
         /// <summary>
         ///  The main entry point for the application.
