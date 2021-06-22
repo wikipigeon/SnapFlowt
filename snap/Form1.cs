@@ -6,7 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace snap
@@ -16,9 +16,19 @@ namespace snap
         public Form1()
         {
             InitializeComponent();
+            ThreadPool.RegisterWaitForSingleObject( Program.procStarted, 
+                                                    wakeupSystem,
+                                                    null, -1, false);
             name1.Text = new string("New_1");
         }
         private bool inputing = false;
+
+        private void wakeupSystem(object sender, bool timeout){
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            this.Activate();
+        }
+
 
         private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
         {

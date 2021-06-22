@@ -3,7 +3,6 @@ using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 
@@ -13,7 +12,7 @@ namespace snap
     {
         public data()
         {
-            transp = 70;
+            transp = 100;
             visibility = true;
             pip = new Form2();
 
@@ -34,26 +33,29 @@ namespace snap
 
     static class Program
     {
-        [System.Runtime.InteropServices.DllImport("User32.dll")]
-        private static extern bool ShowWindowAsync(IntPtr hWnd, int cmdShow);
-        [System.Runtime.InteropServices.DllImport("User32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
+        //[System.Runtime.InteropServices.DllImport("User32.dll")]
+        //private static extern bool ShowWindowAsync(IntPtr hWnd, int cmdShow);
+        //[System.Runtime.InteropServices.DllImport("User32.dll")]
+        //private static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        private const int SW_SHOWNOMAL = 1;
-        private static void HandleRunningInst(Process instance){
-            ShowWindowAsync(instance.MainWindowHandle, SW_SHOWNOMAL);
-            SetForegroundWindow(instance.MainWindowHandle);
-        }
-        private static Process RunningInst(){
-            Process currentProc = Process.GetCurrentProcess();
-            Process[] Procs = Process.GetProcessesByName(currentProc.ProcessName);
-            foreach(Process _Proc in Procs){
-                if(_Proc.Id != currentProc.Id){
-                    return _Proc;
-                }
-            }
-            return null;
-        }
+        //private const int SW_SHOWNOMAL = 1;
+        //private static void HandleRunningInst(Process instance){
+        //    ShowWindowAsync(instance.MainWindowHandle, SW_SHOWNOMAL);
+        //    SetForegroundWindow(instance.MainWindowHandle);
+        //}
+        //private static Process RunningInst(){
+        //    Process currentProc = Process.GetCurrentProcess();
+        //    Process[] Procs = Process.GetProcessesByName(currentProc.ProcessName);
+        //    foreach(Process _Proc in Procs){
+        //        if(_Proc.Id != currentProc.Id){
+        //            return _Proc;
+        //        }
+        //    }
+        //    return null;
+        //}
+
+        public static EventWaitHandle procStarted;
+
 
         /// <summary>
         ///  The main entry point for the application.
@@ -62,16 +64,13 @@ namespace snap
         static void Main()
         {
             bool isRunning = false;
-            Mutex mtx = new Mutex(  true, 
-                                    System.Diagnostics.Process.GetCurrentProcess().ProcessName, 
-                                    out isRunning);
+            procStarted = new EventWaitHandle(  false, 
+                                                EventResetMode.AutoReset, "damnOne",
+                                                out isRunning);
 
             if(!isRunning){
-                Process _p = RunningInst();
-                if(_p != null){
-                    HandleRunningInst(_p);
-                    Environment.Exit(0);
-                }
+                procStarted.Set();
+                return ;
             }
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
