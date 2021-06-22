@@ -43,11 +43,6 @@ namespace snap
 
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void snap_Click(object sender, EventArgs e)
         {
             string target = listBox1.SelectedItem.ToString();
@@ -152,7 +147,8 @@ namespace snap
             }
         }
 
-        private void enableCtrl(bool TF){
+        private void enableCtrl(bool TF)
+        {
             if(!TF){
                 visb.Checked = false;
                 trsp.Value = 50;
@@ -179,5 +175,41 @@ namespace snap
                 name1.Text = string.Empty;
             }
         }
+
+        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            flipflop();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void Form1_SizeChanged(object sender, EventArgs e)
+        {
+            if(this.WindowState == FormWindowState.Minimized){
+                this.Hide();
+            }
+        }
+
+        private void flipflop()
+        {
+            if(this.WindowState == FormWindowState.Normal){
+                this.WindowState = FormWindowState.Minimized;
+            } else {
+                this.Show();
+                this.WindowState = FormWindowState.Normal;
+                this.Activate();
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+            // System.Environment.Exit(0);
+        }
+
     }
 }
