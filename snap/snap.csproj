@@ -6,7 +6,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>SnapFlowt</AssemblyName>
     <StartupObject>snap.Program</StartupObject>
-    <ApplicationIcon />
+    <ApplicationIcon>SnapFlowt.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
