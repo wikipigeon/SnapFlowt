@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,8 +10,9 @@ using System.Windows.Forms;
 
 namespace snap
 {
-    public partial class Form2 : Form
+    public partial class view : Form
     {
+        // move control
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool ReleaseCapture();
         [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -23,34 +23,69 @@ namespace snap
         const int HTCAPTION = 0x0002;
         const int FLEXBILITY = 15;
         private bool key_menu = false;
+        private bool key_ctrl = false;
         private int sourceW = 10;
         private int sourceH = 10;
-
-        public Form2()
-        {
-            InitializeComponent();
-            this.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.Visible = true;
-        }
-
-        public bool available = false;
-
         private int LTRB = 0;
 
-        public void Assign(int L, int T, int W, int H, Bitmap b){
-            sourceW = W;
-            sourceH = H;
-            this.Size = new Size(W, H);
+        public view(Form1 f1, string s, Bitmap bm, int L, int T)
+        {
+            InitializeComponent();
+            callBackTarget = f1;
+            this.thisName = s;
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            activateImage(bm, L, T);
+        }
+        private Form1 callBackTarget;
+        private string thisName;
+
+        public void activateImage(Bitmap bm, int L, int T){
+            this.Visible = true;
+            this.Size = new Size(bm.Width, bm.Height);
             this.Left = L;
             this.Top = T;
-            this.pictureBox1.Image = (Image)b;
-            this.Visible = true;
-            available = true;
+            sourceW = this.Width;
+            sourceH = this.Height;
+            pictureBox1.Image = (Image)bm;
+            this.Activate();
         }
 
-        private void Form2_MouseDown(object sender, MouseEventArgs e)
+        public void handle_volumeChange(int val){
+            this.Opacity = val / 100.0;
+        }
+
+        private void view_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Menu){
+                key_menu = true;
+            } else if(e.Modifiers == Keys.Control){
+                key_ctrl = true;
+            }
+        }
+
+        private void view_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Menu){
+                key_menu = false;
+            } else if(e.Modifiers == Keys.None){
+                key_ctrl = false;
+            }
+        }
+
+        private void view_MouseDown(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Left){
+                if(key_ctrl){
+                    key_ctrl = false;
+                    volume v0 = new volume(this, (int)(this.Opacity*100));
+                    v0.Show();
+                    v0.Left = MousePosition.X;
+                    v0.Top = MousePosition.Y;
+                    v0.Activate();
+                    return ;
+                }
+
                 LTRB = 0;
                 // near left side
                 LTRB |= (Math.Abs(MousePosition.X-this.Left) <= FLEXBILITY)? 0b1000: 0b0000;
@@ -87,37 +122,21 @@ namespace snap
                     this.Size = new Size(sourceW, sourceH);
                 }
             }
-
-        }
-
-        private void Form2_MouseMove(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void Form2_MouseUp(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void Form2_KeyDown(object sender, KeyEventArgs e)
-        {
-            if(e.KeyCode == Keys.Menu){
-                key_menu = true;
-            }
-        }
-
-        private void Form2_KeyUp(object sender, KeyEventArgs e)
-        {
-            if(e.KeyCode == Keys.Menu){
-                key_menu = false;
-            }
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            Form2_MouseDown(sender, e);
+            view_MouseDown(sender, e);
+        }
+
+        private void hideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            callBackTarget.handle_varVisibility(thisName, false);
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            callBackTarget.handle_deleteItem(thisName);
         }
     }
-
 }

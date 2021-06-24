@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 namespace snap
 {
+
     public partial class Form1 : Form
     {
         public Form1()
@@ -19,170 +20,114 @@ namespace snap
             ThreadPool.RegisterWaitForSingleObject( Program.procStarted, 
                                                     wakeupSystem,
                                                     null, -1, false);
-            name1.Text = new string("New_1");
         }
-        private bool inputing = false;
+
+        private Dictionary<string, view> databse = new Dictionary<string, view>();
 
         private void wakeupSystem(object sender, bool timeout){
-            this.Show();
             this.WindowState = FormWindowState.Normal;
-            this.Activate();
-        }
-
-
-        private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolStripComboBox1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
         {
-            if(transp.touch){
-                transp.touch = false;
-                this.Opacity = 1.0D;
-            }
-            if(transp.used){
-                visb.Checked = true;
-                transp.used = false;
-            }
 
         }
 
-        private void snap_Click(object sender, EventArgs e)
+        private void snap_Click(object sender, EventArgs e) // decide new or change
         {
-            string target = listBox1.SelectedItem.ToString();
-            if(transp.database.ContainsKey(target)){
-                transp.target = target;
-                this.Opacity = 0.0D;
-                scrnSnip = new Form3();
+            this.Visible = false;
+            if(dataGridView1.SelectedRows.Count == 0){
+                new shot(this, true);
+            } else {
+                string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+                databse[id].Visible = false;
+                new shot(this, false);
             }
         }
 
-        private void add_Click(object sender, EventArgs e)
+        private void add_Click(object sender, EventArgs e) // new item req
         {
-            addElem(sender);
+            this.Visible = false;
+            new shot(this, true);
         }
 
-        private void addElem(object sender){
-            if(name1.Text == string.Empty){
-                name1.Text = new string("New_1");
-            }
-            inputing = false;
-            bool newer = true;
-            if(!transp.database.ContainsKey(name1.Text)){
-                listBox1.Items.Add(name1.Text);
-                transp.database.Add(name1.Text, new data());
-                newer = false;
-            }
-            int index = listBox1.FindString(name1.Text);
-            listBox1.SetSelected(index, true);
-            visb.Checked = newer;
-        }
+        public void handle_newShot(Bitmap bm, int L, int T, bool type){
+            this.Visible = true;
 
-        private void visb_CheckedChanged(object sender, EventArgs e)
-        {
-            if(listBox1.SelectedIndex < 0){
+            if(bm == null){
+                if(dataGridView1.SelectedRows.Count > 0){
+                    string tar = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+                    databse[tar].Visible = true;
+                }
                 return ;
             }
-            string target = listBox1.SelectedItem.ToString();
-            if(transp.database.ContainsKey(target)){
-                if(visb.Checked && transp.database[target].pip.available){
-                    transp.database[target].pip.Visible = true;
-                    visb.Checked = true;
-                } else {
-                    transp.database[target].pip.Visible = false;
-                    visb.Checked = false;
+            if(type){ // new item
+                string[] s = {  "Visible", 
+                                string.Empty,
+                                System.DateTime.Now.ToString()};
+                dataGridView1.Rows.Add(s);
+                dataGridView1.Rows[dataGridView1.Rows.Count-1].Selected = true;
+            }
+            string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+            if(!databse.ContainsKey(id)){
+                databse.Add(id, new view(this, id, bm, L, T));
+            } else {
+                dataGridView1.SelectedRows[0].Cells[0].Value = "Visible";
+                databse[id].activateImage(bm, L, T);
+            }
+        }
+
+        public void handle_varVisibility(string id, bool value){
+            if(!databse.ContainsKey(id)){
+                return ;
+            }
+            databse[id].Visible = value;
+
+            int index;
+            for(index=0; index<dataGridView1.Rows.Count; ++index){
+                if(id == dataGridView1.Rows[index].Cells[2].Value.ToString()){
+                    break;
                 }
-                transp.database[target].visibility = visb.Checked;
+            }
+            if(index < dataGridView1.Rows.Count){ // finally found
+                dataGridView1.Rows[index].Cells[0].Value = (value)? "Visible": "inVisible";
+            }
+        }
+
+        public void handle_deleteItem(string id){
+            if(!databse.ContainsKey(id)){
+                return ;
+            }
+            databse[id].Close();
+            databse.Remove(id);
+            int index;
+            for(index=0; index<dataGridView1.Rows.Count; ++index){
+                if(id == dataGridView1.Rows[index].Cells[2].Value.ToString()){
+                    break;
+                }
+            }
+            if(index < dataGridView1.Rows.Count){ // finally found
+                dataGridView1.Rows.Remove(dataGridView1.Rows[index]);
             }
         }
 
         private void delete_Click(object sender, EventArgs e)
         {
-            if(listBox1.SelectedIndex < 0){
-                return ;
-            }
-            string target = listBox1.SelectedItem.ToString();
-            if(transp.database.ContainsKey(target)){
-                // enableCtrl(false);
-                if(transp.database.Count == 1){ // nothing leftover
-                    listBox1.ClearSelected();
-                    name1.Text = string.Empty;
-                } else { // not empty yet
-                    if(listBox1.SelectedIndex == 0){ // first item del
-                        listBox1.SetSelected(1, true);
-                    } else {
-                        listBox1.SetSelected(listBox1.SelectedIndex-1, true);
+            if(dataGridView1.SelectedRows.Count > 0){ // item selected
+                int index = dataGridView1.SelectedRows[0].Index;
+                string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+                databse[id].Close();
+                databse.Remove(id);
+                dataGridView1.Rows.Remove(dataGridView1.SelectedRows[0]);
+                if(index > 0){
+                    if(index == dataGridView1.Rows.Count){
+                        dataGridView1.Rows[dataGridView1.Rows.Count-1].Selected = true;
+                        return ;
                     }
                 }
-                listBox1.Items.Remove(target);
-                transp.database[target].pip.Close();
-                transp.database.Remove(target);
-            }
-        }
-
-        private void trsp_Scroll(object sender, EventArgs e)
-        {
-            string target = listBox1.SelectedItem.ToString();
-            if(transp.database.ContainsKey(target)){
-                transp.database[target].transp = trsp.Value;
-                transp.database[target].pip.Opacity = trsp.Value/100.0;
-            }
-        }
-
-        private void name1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(listBox1.SelectedIndex < 0){
-                enableCtrl(false);
-                return ;
-            }
-            inputing = false;
-            enableCtrl(true);
-            data val_;
-            string target = listBox1.SelectedItem.ToString();
-            name1.Text = target;
-            if(transp.database.TryGetValue(target, out val_)){
-                trsp.Value = val_.transp;
-                visb.Checked = val_.visibility;
-            }
-        }
-
-        private void enableCtrl(bool TF)
-        {
-            if(!TF){
-                visb.Checked = false;
-                trsp.Value = 50;
-            }
-            delete.Enabled = TF;
-            snap.Enabled = TF;
-            visb.Enabled = TF;
-            trsp.Enabled = TF;
-        }
-
-        private void name1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if(e.KeyChar == '\r'){
-                inputing = false;
-                e.Handled = true;
-                addElem(sender);
-            }
-        }
-
-        private void name1_MouseDown(object sender, MouseEventArgs e)
-        {
-            if(!inputing){
-                inputing = true;
-                name1.Text = string.Empty;
+                if(dataGridView1.Rows.Count > 0){
+                    dataGridView1.Rows[index].Selected = true;
+                }
             }
         }
 
@@ -200,7 +145,10 @@ namespace snap
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
             if(this.WindowState == FormWindowState.Minimized){
-                this.Hide();
+                this.Visible = false;
+            } else if(this.WindowState == FormWindowState.Normal){
+                this.Visible = true;
+                this.Activate();
             }
         }
 
@@ -209,7 +157,7 @@ namespace snap
             if(this.WindowState == FormWindowState.Normal){
                 this.WindowState = FormWindowState.Minimized;
             } else {
-                this.Show();
+                this.Visible = true;
                 this.WindowState = FormWindowState.Normal;
                 this.Activate();
             }
@@ -218,7 +166,6 @@ namespace snap
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Dispose();
-            // System.Environment.Exit(0);
         }
 
         private void notifyIcon1_MouseDown(object sender, MouseEventArgs e)
@@ -228,6 +175,19 @@ namespace snap
                     this.Activate();
                 }
             }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if( dataGridView1.SelectedRows.Count > 0){
+                string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+                databse[id].Visible = (bool)(dataGridView1.SelectedRows[0].Cells[0].EditedFormattedValue);
+            }
+        }
+
+        private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dataGridView1_CellContentClick(sender, e);
         }
     }
 }

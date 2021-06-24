@@ -8,30 +8,6 @@ using System.Drawing;
 
 namespace snap
 {
-    public class data
-    {
-        public data()
-        {
-            transp = 70;
-            visibility = true;
-            pip = new Form2();
-            pip.Opacity = transp / 100.0;
-
-        }
-        public int transp;
-        public bool visibility;
-        public Form2 pip;
-
-    }
-
-    public static class transp{
-        public static Bitmap bt;
-        public static bool used = false;
-        public static bool touch = false;
-        public static string target;
-        public static Dictionary<string, data> database = new Dictionary<string, data>();
-    }
-
     static class Program
     {
         public static EventWaitHandle procStarted;
@@ -51,6 +27,7 @@ namespace snap
                 procStarted.Set();
                 return ;
             }
+
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
