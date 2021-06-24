@@ -86,6 +86,12 @@ namespace snap
                     return ;
                 }
 
+                if(key_menu){
+                    key_menu = false;
+                    this.Size = new Size(sourceW, sourceH);
+                    return ;
+                }
+
                 LTRB = 0;
                 // near left side
                 LTRB |= (Math.Abs(MousePosition.X-this.Left) <= FLEXBILITY)? 0b1000: 0b0000;
@@ -117,10 +123,7 @@ namespace snap
                     SendMessage(this.Handle, SYSCMD, SC_MOVE + HTCAPTION, 0);
                 }
             } else if(e.Button == MouseButtons.Right){
-                if(key_menu){
-                    key_menu = false;
-                    this.Size = new Size(sourceW, sourceH);
-                }
+
             }
         }
 
