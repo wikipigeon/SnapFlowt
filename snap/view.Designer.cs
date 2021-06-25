@@ -45,11 +45,13 @@ namespace snap
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(8, 8);
+            this.pictureBox1.Size = new System.Drawing.Size(28, 28);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
+            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             // 
             // contextMenuStrip1
             // 
@@ -78,7 +80,7 @@ namespace snap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(8, 8);
+            this.ClientSize = new System.Drawing.Size(28, 28);
             this.ControlBox = false;
             this.Controls.Add(this.pictureBox1);
             this.Cursor = System.Windows.Forms.Cursors.Cross;
@@ -86,6 +88,7 @@ namespace snap
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(30, 30);
             this.Name = "view";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -94,6 +97,8 @@ namespace snap
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.view_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.view_KeyUp);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.view_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.view_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.view_MouseUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
