@@ -31,24 +31,33 @@ namespace snap
         public view(Form1 f1, string s, Bitmap bm, int L, int T)
         {
             InitializeComponent();
+            this.Size = new Size(bm.Width, bm.Height);
+            if(L>0){
+                this.Left = L;
+                this.Top = T;
+            } else {
+                this.StartPosition = FormStartPosition.WindowsDefaultLocation;
+            }
+            sourceW = this.Width;
+            sourceH = this.Height;
+            pictureBox1.Image = (Image)bm;
             callBackTarget = f1;
             this.thisName = s;
             this.Show();
             this.WindowState = FormWindowState.Normal;
-            activateImage(bm, L, T);
+            this.Activate();
         }
         private Form1 callBackTarget;
         private string thisName;
 
-        public void activateImage(Bitmap bm, int L, int T){
-            this.Visible = true;
+        public void reloadImage(Bitmap bm, int L, int T){
             this.Size = new Size(bm.Width, bm.Height);
-            this.Left = L;
-            this.Top = T;
             sourceW = this.Width;
             sourceH = this.Height;
+            this.Left = L;
+            this.Top = T;
             pictureBox1.Image = (Image)bm;
-            this.Activate();
+            this.Visible = true;
         }
 
         public void handle_volumeChange(int val){

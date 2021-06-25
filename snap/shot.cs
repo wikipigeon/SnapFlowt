@@ -12,7 +12,7 @@ namespace snap
 {
     public partial class shot : Form
     {
-        public shot(Form1 f1, bool t)
+        public shot(Form1 f1, int t)
         {
             InitializeComponent();
             callBackTarget = f1;
@@ -22,7 +22,7 @@ namespace snap
             this.Activate();
         }
         private Form1 callBackTarget;
-        private bool type;
+        private int type;
 
         // capture
         private bool capBegin;
@@ -32,7 +32,7 @@ namespace snap
         private void shot_KeyPress(object sender, KeyPressEventArgs e)
         {
             if(true){
-                callBackTarget.handle_newShot(null, 0, 0, false);
+                callBackTarget.handle_newShot(null, 0, 0, 0);
                 this.Close();
             }
         }

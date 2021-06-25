@@ -37,21 +37,21 @@ namespace snap
         {
             this.Visible = false;
             if(dataGridView1.SelectedRows.Count == 0){
-                new shot(this, true);
+                new shot(this, 1);
             } else {
                 string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
                 databse[id].Visible = false;
-                new shot(this, false);
+                new shot(this, 0);
             }
         }
 
         private void add_Click(object sender, EventArgs e) // new item req
         {
             this.Visible = false;
-            new shot(this, true);
+            new shot(this, 1);
         }
 
-        public void handle_newShot(Bitmap bm, int L, int T, bool type){
+        public void handle_newShot(Bitmap bm, int L, int T, int type){
             this.Visible = true;
 
             if(bm == null){
@@ -61,7 +61,7 @@ namespace snap
                 }
                 return ;
             }
-            if(type){ // new item
+            if(type > 0){ // new item
                 string[] s = {  "Visible", 
                                 string.Empty,
                                 System.DateTime.Now.ToString()};
@@ -70,10 +70,14 @@ namespace snap
             }
             string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
             if(!databse.ContainsKey(id)){
-                databse.Add(id, new view(this, id, bm, L, T));
+                if(type == 1){
+                    databse.Add(id, new view(this, id, bm, L, T));
+                } else if(type == 2){
+                    databse.Add(id, new view(this, id, bm, -1, -1));
+                }
             } else {
                 dataGridView1.SelectedRows[0].Cells[0].Value = "Visible";
-                databse[id].activateImage(bm, L, T);
+                databse[id].reloadImage(bm, L, T);
             }
         }
 
@@ -188,6 +192,14 @@ namespace snap
         private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             dataGridView1_CellContentClick(sender, e);
+        }
+
+        private void open_Click(object sender, EventArgs e)
+        {
+            if(openFileDialog1.ShowDialog() == DialogResult.OK){
+                Bitmap bm = new Bitmap(openFileDialog1.FileName);
+                handle_newShot(bm, -1, -1, 2);
+            }
         }
     }
 }
