@@ -52,8 +52,9 @@ namespace snap
         }
 
         public void handle_newShot(Bitmap bm, int L, int T, int type){
-            this.Visible = true;
-
+            if(type != 3){
+                this.Visible = true;
+            }
             if(bm == null){
                 if(dataGridView1.SelectedRows.Count > 0){
                     string tar = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
@@ -70,7 +71,7 @@ namespace snap
             }
             string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
             if(!databse.ContainsKey(id)){
-                if(type == 1){
+                if((type & 0x1) == 1){
                     databse.Add(id, new view(this, id, bm, L, T));
                 } else if(type == 2){
                     databse.Add(id, new view(this, id, bm, -1, -1));
@@ -199,6 +200,16 @@ namespace snap
             if(openFileDialog1.ShowDialog() == DialogResult.OK){
                 Bitmap bm = new Bitmap(openFileDialog1.FileName);
                 handle_newShot(bm, -1, -1, 2);
+            }
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(this.Visible){
+                this.Visible = false;
+                new shot(this, 1);
+            } else {
+                new shot(this, 3);
             }
         }
     }

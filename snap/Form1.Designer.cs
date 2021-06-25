@@ -55,6 +55,7 @@ namespace snap
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -104,7 +105,7 @@ namespace snap
             this.add.Name = "add";
             this.add.Size = new System.Drawing.Size(190, 41);
             this.add.TabIndex = 0;
-            this.add.Text = "Add";
+            this.add.Text = "New";
             this.add.UseVisualStyleBackColor = true;
             this.add.Click += new System.EventHandler(this.add_Click);
             // 
@@ -171,6 +172,7 @@ namespace snap
             this.dataGridView1.RowTemplate.Height = 33;
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.ShowCellToolTips = false;
             this.dataGridView1.Size = new System.Drawing.Size(576, 183);
             this.dataGridView1.TabIndex = 7;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
@@ -217,16 +219,24 @@ namespace snap
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exitToolStripMenuItem});
+            this.exitToolStripMenuItem,
+            this.newToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(112, 36);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(120, 68);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(111, 32);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(119, 32);
+            this.exitToolStripMenuItem.Text = "New";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            // 
+            // newToolStripMenuItem
+            // 
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(119, 32);
+            this.newToolStripMenuItem.Text = "Exit";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
@@ -269,6 +279,7 @@ namespace snap
         private DataGridViewTextBoxColumn NameTag;
         private DataGridViewTextBoxColumn Identity;
         private OpenFileDialog openFileDialog1;
+        private ToolStripMenuItem newToolStripMenuItem;
     }
 }
 
