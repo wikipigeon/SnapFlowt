@@ -184,9 +184,11 @@ namespace snap
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if( dataGridView1.SelectedRows.Count > 0){
+            int index = dataGridView1.SelectedRows.Count;
+            if(index > 0){
                 string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
                 databse[id].Visible = (bool)(dataGridView1.SelectedRows[0].Cells[0].EditedFormattedValue);
+                dataGridView1.Rows[index-1].Cells[1].Selected = true;
             }
         }
 

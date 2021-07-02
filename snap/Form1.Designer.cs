@@ -49,14 +49,14 @@ namespace snap
             this.delete = new System.Windows.Forms.Button();
             this.open = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Visb = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.NameTag = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Identity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.Visb = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.NameTag = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Identity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -178,35 +178,6 @@ namespace snap
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentDoubleClick);
             // 
-            // Visb
-            // 
-            this.Visb.FalseValue = "inVisible";
-            this.Visb.HeaderText = "visb";
-            this.Visb.MinimumWidth = 8;
-            this.Visb.Name = "Visb";
-            this.Visb.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Visb.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Visb.TrueValue = "Visible";
-            this.Visb.Width = 50;
-            // 
-            // NameTag
-            // 
-            this.NameTag.HeaderText = "nametag";
-            this.NameTag.MaxInputLength = 40;
-            this.NameTag.MinimumWidth = 8;
-            this.NameTag.Name = "NameTag";
-            this.NameTag.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.NameTag.Width = 526;
-            // 
-            // Identity
-            // 
-            this.Identity.HeaderText = "identity";
-            this.Identity.MinimumWidth = 8;
-            this.Identity.Name = "Identity";
-            this.Identity.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Identity.Visible = false;
-            this.Identity.Width = 150;
-            // 
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
@@ -243,6 +214,35 @@ namespace snap
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "JPEG Files (*.jpg)|*.jpg|PNG Files (*.png)|*.png|BMP Files (*.bmp)|*.bmp";
             // 
+            // Visb
+            // 
+            this.Visb.FalseValue = "inVisible";
+            this.Visb.HeaderText = "visb";
+            this.Visb.MinimumWidth = 8;
+            this.Visb.Name = "Visb";
+            this.Visb.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Visb.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Visb.TrueValue = "Visible";
+            this.Visb.Width = 50;
+            // 
+            // NameTag
+            // 
+            this.NameTag.HeaderText = "nametag";
+            this.NameTag.MaxInputLength = 40;
+            this.NameTag.MinimumWidth = 8;
+            this.NameTag.Name = "NameTag";
+            this.NameTag.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NameTag.Width = 526;
+            // 
+            // Identity
+            // 
+            this.Identity.HeaderText = "identity";
+            this.Identity.MinimumWidth = 8;
+            this.Identity.Name = "Identity";
+            this.Identity.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Identity.Visible = false;
+            this.Identity.Width = 150;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
@@ -275,11 +275,11 @@ namespace snap
         private ToolStripMenuItem exitToolStripMenuItem;
         private Button open;
         private DataGridView dataGridView1;
+        private OpenFileDialog openFileDialog1;
+        private ToolStripMenuItem newToolStripMenuItem;
         private DataGridViewCheckBoxColumn Visb;
         private DataGridViewTextBoxColumn NameTag;
         private DataGridViewTextBoxColumn Identity;
-        private OpenFileDialog openFileDialog1;
-        private ToolStripMenuItem newToolStripMenuItem;
     }
 }
 
