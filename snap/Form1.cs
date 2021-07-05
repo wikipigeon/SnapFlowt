@@ -1,11 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -56,7 +51,7 @@ namespace snap
                 this.Visible = true;
             }
             if(bm == null){
-                if(dataGridView1.SelectedRows.Count > 0){
+                if((dataGridView1.SelectedRows.Count > 0) && (type == 2)){
                     string tar = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
                     databse[tar].Visible = true;
                 }
@@ -188,7 +183,7 @@ namespace snap
             if(index > 0){
                 string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
                 databse[id].Visible = (bool)(dataGridView1.SelectedRows[0].Cells[0].EditedFormattedValue);
-                dataGridView1.Rows[index-1].Cells[1].Selected = true;
+                dataGridView1.SelectedRows[0].Cells[1].Selected = true;
             }
         }
 

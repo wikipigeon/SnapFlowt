@@ -32,7 +32,7 @@ namespace snap
         private void shot_KeyPress(object sender, KeyPressEventArgs e)
         {
             if(true){
-                callBackTarget.handle_newShot(null, 0, 0, 0);
+                callBackTarget.handle_newShot(null, 0, 0, type);
                 this.Close();
             }
         }
