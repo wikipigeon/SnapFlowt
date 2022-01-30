@@ -209,5 +209,27 @@ namespace snap
                 new shot(this, 3);
             }
         }
+
+        private void dataGridView1_DragDrop(object sender, DragEventArgs e)
+        {
+            string localFilePath = ((System.Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
+            string extension = System.IO.Path.GetExtension(localFilePath);
+            if(extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".bmp"){
+                Bitmap bm = new Bitmap(localFilePath);
+                handle_newShot(bm, -1, -1, 2);
+            }
+        }
+
+        private void dataGridView1_DragEnter(object sender, DragEventArgs e)
+        {
+            string localFilePath = ((System.Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
+            string extension = System.IO.Path.GetExtension(localFilePath);
+            // string.Compare(extension, ".jpg", true) == 0
+            if(extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".bmp"){
+                e.Effect = DragDropEffects.Copy;
+            } else {
+                e.Effect = DragDropEffects.None;
+            }
+        }
     }
 }
