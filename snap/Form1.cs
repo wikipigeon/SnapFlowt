@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -195,8 +196,10 @@ namespace snap
         private void open_Click(object sender, EventArgs e)
         {
             if(openFileDialog1.ShowDialog() == DialogResult.OK){
-                Bitmap bm = new Bitmap(openFileDialog1.FileName);
-                handle_newShot(bm, -1, -1, 2);
+                using(FileStream file = File.Open(openFileDialog1.FileName, FileMode.Open)){
+                    Bitmap bm = new Bitmap(file);
+                    handle_newShot(bm, -1, -1, 2);
+                }
             }
         }
 
@@ -212,19 +215,23 @@ namespace snap
 
         private void dataGridView1_DragDrop(object sender, DragEventArgs e)
         {
+                //using(FileStream file = File.Open(openFileDialog1.FileName, FileMode.Open))
+                //{
+                //    Bitmap bm = new Bitmap(file);
+                //    handle_newShot(bm, -1, -1, 2);
+                //}
             string localFilePath = ((System.Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
-            string extension = System.IO.Path.GetExtension(localFilePath);
-            if(extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".bmp"){
-                Bitmap bm = new Bitmap(localFilePath);
+            using(FileStream file = File.Open(localFilePath, FileMode.Open)){
+                Bitmap bm = new Bitmap(file);
                 handle_newShot(bm, -1, -1, 2);
             }
+
         }
 
         private void dataGridView1_DragEnter(object sender, DragEventArgs e)
         {
             string localFilePath = ((System.Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
             string extension = System.IO.Path.GetExtension(localFilePath);
-            // string.Compare(extension, ".jpg", true) == 0
             if(extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".bmp"){
                 e.Effect = DragDropEffects.Copy;
             } else {
