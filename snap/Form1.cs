@@ -43,8 +43,7 @@ namespace snap
 
         private void add_Click(object sender, EventArgs e) // new item req
         {
-            this.Visible = false;
-            new shot(this, 1);
+            silentScreenShot();
         }
 
         public void handle_newShot(Bitmap bm, int L, int T, int type){
@@ -60,7 +59,7 @@ namespace snap
             }
             if(type > 0){ // new item
                 string[] s = {  "Visible", 
-                                string.Empty,
+                                string.Empty, 
                                 System.DateTime.Now.ToString()};
                 dataGridView1.Rows.Add(s);
                 dataGridView1.Rows[dataGridView1.Rows.Count-1].Selected = true;
@@ -205,6 +204,10 @@ namespace snap
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            silentScreenShot();
+        }
+
+        private void silentScreenShot(){
             if(this.Visible){
                 this.Visible = false;
                 new shot(this, 1);
